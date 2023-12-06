@@ -17,7 +17,6 @@ const port = process.env.PORT || 5000;
 app.use("/user", userRouter);
 
 
-
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
