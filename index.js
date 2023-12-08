@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import { getDb } from "./db/config.js";
 import userRouter from "./routes/user.router.js";
+import studentRouter from "./routes/student.route.js";
 
 
 getDb();
@@ -15,6 +16,7 @@ const port = process.env.PORT || 5000;
 
 
 app.use("/user", userRouter);
+app.use("/student", studentRouter);
 
 
 app.get("/", (req, res) => {
