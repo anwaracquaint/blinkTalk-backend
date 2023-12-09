@@ -11,7 +11,7 @@ export const authenticateToken = async (req, res, next) => {
     if (!token) return res.status(401).json({ success: false, message: 'Unauthorized token' });
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const decoded = jwt.verify(token, process.env.SECRET_KEY || "blinkTalkUser");
 
         const user = await User.findById(decoded?.id);
 
