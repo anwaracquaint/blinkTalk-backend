@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { getDb } from "./db/config.js";
 import userRouter from "./routes/user.router.js";
 import studentRouter from "./routes/student.route.js";
+import { Server } from "socket.io";
 
 
 getDb();
@@ -23,6 +24,19 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
+
+
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        credentials: true,
+    },
+});
+
+
+io.on("connection", (socket) => {
+    console.log("socket", socket);
+});
