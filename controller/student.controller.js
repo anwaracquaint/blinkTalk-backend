@@ -1,4 +1,5 @@
 import { User } from "../model/user.model.js";
+import { Room } from "../model/room.model.js";
 
 const getStudents = async (req, res) => {
     try {
@@ -63,6 +64,13 @@ const addStudent = async (req, res) => {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
 
+        const isRoomCreated = await Room.findOne({ $or: [{ createdId: userId, friendId: contactUserIds[0] }, { createdId: contactUserIds[0], friendId: userId }] }).exec();
+
+
+        if (!isRoomCreated) {
+            await Room.create({ createdId: userId, friendId: contactUserIds[0] });
+        }
+
         const existingContacts = user?.contacts?.map(contact => contact.toString());
 
         const isContactAlreadyAdded = existingContacts.includes(contactUserIds[0].toString());
@@ -97,6 +105,15 @@ const removeStudent = async (req, res) => {
         if (!user) {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
+
+        const existingRoom = await Room.findOne({ $or: [{ createdId: userId, friendId: contactUserIds[0] }, { createdId: contactUserIds[0], friendId: userId }] }).exec();
+
+
+        if (existingRoom) {
+            const deletedRoom = await Room.findByIdAndDelete({ _id: existingRoom?.id }).exec();
+        }
+
+
 
         const existingContacts = user?.contacts?.map(contact => contact.toString());
 
