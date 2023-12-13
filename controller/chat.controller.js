@@ -130,8 +130,6 @@ const getActiveChats = async (req, res) => {
 
         const uniqueUsers = Array.from(new Set(modifiedData.map(item => item.user)));
 
-        // console.log("uniqueUsers", uniqueUsers);
-
         const activeUsers = await User.find({ _id: { $in: uniqueUsers } });
 
         const jsonUpdatedUsers = JSON.parse(JSON.stringify(activeUsers))
@@ -142,10 +140,6 @@ const getActiveChats = async (req, res) => {
                 username: user.username
             }
         })
-
-
-
-
 
 
         return res.status(200).send({ success: true, message: "Chats fetch successfully", data: finalActiveUsers });
