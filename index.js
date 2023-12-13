@@ -8,6 +8,7 @@ import { Server } from "socket.io";
 import roomRouter from "./routes/room.route.js";
 import chatRouter from "./routes/chat.route.js";
 import { Chat } from "./model/chat.model.js";
+import { ObjectId } from "mongodb";
 
 
 getDb();
@@ -45,32 +46,28 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
     let currentRoom = null;
 
-    socket.on('join_room', (data) => {
-        console.log('User joined room:', data.roomId);
+    const msgHandler = async (data) => {
 
-        // Leave the current room, if any
+        const { message, receiverId, senderId, roomId } = data?.data;
+
+
+        await Chat.create({ message: message, receiverId: receiverId, senderId: senderId, roomId: roomId });
+
+        if (currentRoom) {
+            io.to(currentRoom).emit('receive_message', { data });
+        }
+    }
+
+    socket.on('send_message', msgHandler);
+
+    socket.on('join_room', (data) => {
         if (currentRoom) {
             socket.leave(currentRoom);
         }
 
-        // Join the new room
-        socket.join(data.roomId);
-        currentRoom = data.roomId;
+        socket?.join(data?.roomId);
+
+        currentRoom = data?.roomId;
     });
 
-
-
-    const msgHandler = async (data) => {
-
-        const { message, receiverId, senderId } = data?.data;
-
-        await Chat.create({ message: message, receiverId: receiverId, senderId: senderId });
-        if (currentRoom) {
-            io.to(currentRoom).emit('receive_message', { data });
-        }
-
-
-    }
-
-    socket.on('send_message', msgHandler)
 });

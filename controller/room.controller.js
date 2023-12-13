@@ -4,7 +4,7 @@ const getRoom = async (req, res) => {
     try {
         const { userId, friendId } = req.query;
 
-        console.log("query", userId, friendId);
+        // console.log("query", userId, friendId);
 
         const room = await Room.findOne({ $or: [{ createdId: userId, friendId: friendId }, { createdId: friendId, friendId: userId }] }).exec();
 
