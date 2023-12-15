@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'blink-talk-backend-3sb6q413b-anwar-shaikhs-projects.vercel.app',
+    origin: '*',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 }))
