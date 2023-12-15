@@ -20,10 +20,11 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://blink-talk-backend-h46dbrm58-anwar-shaikhs-projects.vercel.app',
+    origin: 'blink-talk-backend-3sb6q413b-anwar-shaikhs-projects.vercel.app',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 }))
+
 const port = process.env.PORT || 5000;
 
 app.use("/user", userRouter);
