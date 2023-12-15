@@ -9,6 +9,8 @@ import roomRouter from "./routes/room.route.js";
 import chatRouter from "./routes/chat.route.js";
 import { Chat } from "./model/chat.model.js";
 import { ObjectId } from "mongodb";
+import groupChatRouter from "./routes/groupChat.route.js";
+import { GroupChat } from './model/groupChat.model.js';
 
 
 getDb();
@@ -24,6 +26,7 @@ app.use("/user", userRouter);
 app.use("/student", studentRouter);
 app.use("/room", roomRouter);
 app.use("/chat", chatRouter);
+app.use("/groupChat", groupChatRouter);
 
 
 app.get("/", (req, res) => {
@@ -48,10 +51,15 @@ io.on('connection', (socket) => {
 
     const msgHandler = async (data) => {
 
-        const { message, receiverId, senderId, roomId } = data?.data;
+        const { message, receiverId, senderId, roomId, isChatOrGroup, groupName, groupRoomId, participants } = data?.data;
+
+        if (isChatOrGroup == 0) {
+            await Chat.create({ message: message, receiverId: receiverId, senderId: senderId, roomId: roomId });
+        } else {
+            await GroupChat.create({ message: message, groupName: groupName, groupRoomId: groupRoomId, participants: participants, })
+        }
 
 
-        await Chat.create({ message: message, receiverId: receiverId, senderId: senderId, roomId: roomId });
 
         if (currentRoom) {
             io.to(currentRoom).emit('receive_message', { data });
