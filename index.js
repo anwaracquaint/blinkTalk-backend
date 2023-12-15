@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cors());
 const port = process.env.PORT || 5000;
 
-
+console.log("A");
 app.use("/user", userRouter);
 app.use("/student", studentRouter);
 app.use("/room", roomRouter);
