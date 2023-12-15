@@ -79,6 +79,7 @@ const addStudent = async (req, res) => {
         if (!isContactAlreadyAdded) {
             const updatedUser = await User.findByIdAndUpdate(
                 userId,
+
                 { $push: { contacts: { $each: contactUserIds } } },
                 { new: true }
             );

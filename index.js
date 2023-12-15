@@ -18,10 +18,9 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors())
 const port = process.env.PORT || 5000;
 
-console.log("A");
 app.use("/user", userRouter);
 app.use("/student", studentRouter);
 app.use("/room", roomRouter);
