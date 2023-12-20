@@ -61,10 +61,8 @@ io.on('connection', (socket) => {
         if (isChatOrGroup == 0) {
             await Chat.create({ message: message, receiverId: receiverId, senderId: senderId, roomId: roomId });
         } else {
-            await GroupChat.create({ message: message, groupName: groupName, groupRoomId: groupRoomId, participants: participants, })
+            await GroupChat.create({ message: message, groupName: groupName, groupRoomId: groupRoomId, participants: participants, senderId: senderId })
         }
-
-
 
         if (currentRoom) {
             io.to(currentRoom).emit('receive_message', { data });

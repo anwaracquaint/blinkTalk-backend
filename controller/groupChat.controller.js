@@ -40,6 +40,8 @@ const getGroupChatMessages = async (req, res) => {
 
         const messages = await GroupChat.find({ groupRoomId: roomId });
 
+
+
         return res.status(200).send({ success: true, message: "Group Fetch successfully", data: messages });
     } catch (error) {
         console.log("error", error);
