@@ -56,12 +56,12 @@ io.on('connection', (socket) => {
 
     const msgHandler = async (data) => {
 
-        const { message, receiverId, senderId, roomId, isChatOrGroup, groupName, groupRoomId, participants } = data?.data;
+        const { message, receiverId, senderId, roomId, isChatOrGroup, groupName, groupRoomId, participants, senderName } = data?.data;
 
         if (isChatOrGroup == 0) {
             await Chat.create({ message: message, receiverId: receiverId, senderId: senderId, roomId: roomId });
         } else {
-            await GroupChat.create({ message: message, groupName: groupName, groupRoomId: groupRoomId, participants: participants, senderId: senderId })
+            await GroupChat.create({ message: message, groupName: groupName, groupRoomId: groupRoomId, participants: participants, senderId: senderId, senderName: senderName })
         }
 
         if (currentRoom) {
