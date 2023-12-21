@@ -18,7 +18,7 @@ const loginHandler = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(401).send({ success: false, message: "Incorrect Username or Password" });
         } else {
-            const secretKey = process.env.SECRET_KEY || "blinkTalkUser";
+            const secretKey = process.env.SECRET_KEY;
 
             const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: "24h" });
 
